@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe UI Design — Delivery &amp; Logistics IMS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --wire-bg: #f8f9fb;
+    --wire-border: #c5cdd8;
+    --wire-dark: #2d3748;
+    --wire-mid: #718096;
+    --wire-light: #e2e8f0;
+    --wire-accent: #2563eb;
+    --wire-green: #16a34a;
+    --wire-orange: #ea580c;
+    --wire-card: #ffffff;
+    --wire-placeholder: #edf2f7;
+    --radius: 8px;
+  }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #eef1f6; color: var(--wire-dark); }
+
+  /* ===== Page / Print Layout ===== */
+  .page {
+    width: 1100px; margin: 40px auto; background: #fff;
+    padding: 50px 60px; border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    page-break-after: always;
+  }
+  .page-title {
+    font-size: 28px; font-weight: 700; color: var(--wire-accent);
+    border-bottom: 3px solid var(--wire-accent); padding-bottom: 10px; margin-bottom: 8px;
+  }
+  .page-subtitle { font-size: 14px; color: var(--wire-mid); margin-bottom: 36px; }
+
+  /* ===== Wireframe Frame ===== */
+  .wire-frame {
+    border: 2px solid var(--wire-border); border-radius: var(--radius);
+    background: var(--wire-bg); overflow: hidden; margin-bottom: 28px;
+  }
+  .wire-frame-label {
+    background: var(--wire-dark); color: #fff; font-size: 11px; font-weight: 600;
+    padding: 5px 14px; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .wire-frame-inner { padding: 20px; }
+
+  /* ===== Mobile Frame ===== */
+  .mobile-frame {
+    width: 320px; min-height: 568px; border: 2px solid var(--wire-border);
+    border-radius: 28px; background: var(--wire-bg); overflow: hidden;
+    position: relative; display: inline-block; vertical-align: top; margin: 0 16px 20px 0;
+  }
+  .mobile-notch {
+    width: 120px; height: 24px; background: var(--wire-dark); border-radius: 0 0 14px 14px;
+    margin: 0 auto;
+  }
+  .mobile-screen { padding: 16px; }
+  .mobile-statusbar {
+    display: flex; justify-content: space-between; padding: 8px 16px 4px;
+    font-size: 10px; color: var(--wire-mid);
+  }
+
+  /* ===== Desktop Frame ===== */
+  .desktop-frame {
+    border: 2px solid var(--wire-border); border-radius: var(--radius);
+    background: var(--wire-bg); overflow: hidden; margin-bottom: 20px;
+  }
+  .desktop-toolbar {
+    background: var(--wire-dark); padding: 8px 14px; display: flex; align-items: center; gap: 6px;
+  }
+  .desktop-dot { width: 10px; height: 10px; border-radius: 50%; background: #e53e3e; }
+  .desktop-dot:nth-child(2) { background: #ecc94b; }
+  .desktop-dot:nth-child(3) { background: #48bb78; }
+  .desktop-url {
+    background: #4a5568; border-radius: 4px; padding: 3px 12px; margin-left: 10px;
+    font-size: 10px; color: #a0aec0; flex: 1;
+  }
+  .desktop-content { display: flex; min-height: 400px; }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    width: 200px; background: #1e293b; padding: 16px 0; flex-shrink: 0;
+  }
+  .sidebar-logo {
+    padding: 8px 16px 20px; font-size: 14px; font-weight: 700; color: #fff;
+    border-bottom: 1px solid #334155;
+  }
+  .sidebar-item {
+    padding: 10px 16px; font-size: 12px; color: #94a3b8; display: flex;
+    align-items: center; gap: 10px; cursor: default;
+  }
+  .sidebar-item.active { background: #334155; color: #fff; border-left: 3px solid var(--wire-accent); }
+  .sidebar-item .icon { width: 16px; text-align: center; font-size: 14px; }
+
+  /* ===== Main Content Area ===== */
+  .main-content { flex: 1; padding: 20px; background: var(--wire-bg); }
+
+  /* ===== Components ===== */
+  .kpi-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .kpi-card {
+    flex: 1; background: var(--wire-card); border: 1px solid var(--wire-light);
+    border-radius: var(--radius); padding: 14px; text-align: center;
+  }
+  .kpi-value { font-size: 24px; font-weight: 700; color: var(--wire-accent); }
+  .kpi-label { font-size: 10px; color: var(--wire-mid); margin-top: 4px; }
+
+  .placeholder-box {
+    background: var(--wire-placeholder); border: 1px dashed var(--wire-border);
+    border-radius: var(--radius); display: flex; align-items: center;
+    justify-content: center; color: var(--wire-mid); font-size: 11px;
+    min-height: 80px; margin-bottom: 10px;
+  }
+
+  .btn-wire {
+    display: inline-block; padding: 8px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; border: none; cursor: default;
+  }
+  .btn-primary { background: var(--wire-accent); color: #fff; }
+  .btn-success { background: var(--wire-green); color: #fff; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--wire-border); color: var(--wire-dark); }
+
+  .input-wire {
+    width: 100%; padding: 8px 10px; border: 1.5px solid var(--wire-border);
+    border-radius: 6px; background: #fff; font-size: 11px; color: var(--wire-mid);
+    margin-bottom: 8px;
+  }
+
+  .table-wire {
+    width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px;
+  }
+  .table-wire th {
+    background: var(--wire-dark); color: #fff; padding: 8px 10px;
+    text-align: left; font-weight: 600;
+  }
+  .table-wire td { padding: 8px 10px; border-bottom: 1px solid var(--wire-light); }
+  .table-wire tr:nth-child(even) td { background: #f7fafc; }
+
+  .status-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 10px; font-weight: 600;
+  }
+  .status-green { background: #dcfce7; color: #166534; }
+  .status-blue { background: #dbeafe; color: #1e40af; }
+  .status-orange { background: #ffedd5; color: #9a3412; }
+  .status-red { background: #fee2e2; color: #991b1b; }
+
+  /* ===== Mobile Components ===== */
+  .mobile-nav {
+    display: flex; justify-content: space-around; padding: 10px 0;
+    border-top: 1px solid var(--wire-light); background: #fff;
+    position: absolute; bottom: 0; left: 0; right: 0;
+  }
+  .mobile-nav-item { text-align: center; font-size: 9px; color: var(--wire-mid); }
+  .mobile-nav-item.active { color: var(--wire-accent); }
+  .mobile-nav-item .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
+  .delivery-card {
+    background: var(--wire-card); border: 1px solid var(--wire-light);
+    border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+  }
+  .delivery-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .delivery-id { font-weight: 700; font-size: 13px; }
+  .delivery-addr { font-size: 11px; color: var(--wire-mid); }
+
+  /* ===== Flow Diagram ===== */
+  .flow-container { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin: 20px 0; }
+  .flow-box {
+    background: var(--wire-card); border: 2px solid var(--wire-accent);
+    border-radius: var(--radius); padding: 10px 18px; font-size: 11px;
+    font-weight: 600; color: var(--wire-accent); text-align: center; min-width: 110px;
+  }
+  .flow-arrow { font-size: 20px; color: var(--wire-accent); }
+
+  /* ===== Annotations ===== */
+  .annotation {
+    background: #fef3c7; border-left: 3px solid #f59e0b; padding: 8px 12px;
+    font-size: 11px; color: #92400e; margin: 12px 0; border-radius: 0 6px 6px 0;
+  }
+  .section-label {
+    font-size: 16px; font-weight: 700; color: var(--wire-dark); margin: 24px 0 12px;
+    padding-bottom: 6px; border-bottom: 2px solid var(--wire-light);
+  }
+  .design-note {
+    font-size: 11px; color: var(--wire-mid); font-style: italic; margin-bottom: 16px;
+  }
+
+  .screens-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+  /* ===== Timeline ===== */
+  .timeline { padding-left: 20px; border-left: 2px solid var(--wire-accent); margin: 10px 0; }
+  .timeline-item { padding: 6px 0 12px 14px; position: relative; font-size: 11px; }
+  .timeline-item::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--wire-accent); position: absolute; left: -26px; top: 8px;
+  }
+  .timeline-item.completed::before { background: var(--wire-green); }
+  .timeline-time { font-size: 9px; color: var(--wire-mid); }
+
+  /* ===== Tabs ===== */
+  .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid var(--wire-light); }
+  .tab {
+    padding: 8px 16px; font-size: 12px; font-weight: 500; color: var(--wire-mid);
+    cursor: default; border-bottom: 2px solid transparent; margin-bottom: -2px;
+  }
+  .tab.active { color: var(--wire-accent); border-bottom-color: var(--wire-accent); font-weight: 600; }
+
+  .two-col { display: flex; gap: 20px; }
+  .two-col > * { flex: 1; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 30px 40px; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- COVER PAGE -->
+<!-- ============================================================ -->
+<div class="page">
+  <div style="text-align:center; padding-top: 120px;">
+    <div style="font-size:36px; font-weight:700; color:var(--wire-accent); margin-bottom:12px;">Wireframe User Interface Design</div>
+    <div style="font-size:18px; color:var(--wire-mid); margin-bottom:40px;">Delivery &amp; Logistics Information Management System</div>
+    <div style="display:inline-block; background:var(--wire-accent); color:#fff; padding:12px 32px; border-radius:8px; font-size:14px; font-weight:600;">5 User Roles &bull; Web &amp; Mobile &bull; Responsive Design</div>
+    <div style="margin-top:60px; font-size:13px; color:var(--wire-mid);">
+      Student Name: [Student Name]<br>
+      Unit: Systems Development and User Experience (UX)<br>
+      Tool: Figma-style wireframes
+    </div>
+    <div style="margin-top:40px;">
+      <div style="font-size:13px; font-weight:600; color:var(--wire-dark); margin-bottom:10px;">Design System</div>
+      <div style="display:flex; justify-content:center; gap:12px;">
+        <div style="width:50px;height:50px;background:#2563EB;border-radius:8px;" title="Primary Blue"></div>
+        <div style="width:50px;height:50px;background:#16A34A;border-radius:8px;" title="Secondary Green"></div>
+        <div style="width:50px;height:50px;background:#EA580C;border-radius:8px;" title="Accent Orange"></div>
+        <div style="width:50px;height:50px;background:#2d3748;border-radius:8px;" title="Dark"></div>
+        <div style="width:50px;height:50px;background:#f8f9fb;border:2px solid #c5cdd8;border-radius:8px;" title="Background"></div>
+      </div>
+      <div style="font-size:10px; color:var(--wire-mid); margin-top:8px;">#2563EB &bull; #16A34A &bull; #EA580C &bull; Min 16px body &bull; 8px grid &bull; 44px touch targets</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SYSTEM FLOW OVERVIEW -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">System Flow Overview</div>
+  <div class="page-subtitle">Flow between screens across all five user roles</div>
+
+  <div class="section-label">Overall System Architecture &amp; Screen Flow</div>
+  <div class="design-note">Arrows indicate primary navigation paths. Each role accesses the system through a shared authentication gateway with role-based routing.</div>
+
+  <div class="wire-frame">
+    <div class="wire-frame-label">System Navigation Map</div>
+    <div class="wire-frame-inner" style="text-align:center;">
+      <!-- Auth -->
+      <div class="flow-box" style="border-color:var(--wire-dark); color:var(--wire-dark); margin:0 auto 10px;">🔐 Login / Authentication</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box" style="border-color:var(--wire-dark); color:var(--wire-dark); margin:0 auto 20px;">🔀 Role-Based Router</div>
+      <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box" style="background:#dbeafe;">🚗 Driver<br><span style="font-size:9px;font-weight:400;">Mobile App</span></div>
+        </div>
+        <div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box" style="background:#dcfce7;">👤 Customer<br><span style="font-size:9px;font-weight:400;">Web Portal</span></div>
+        </div>
+        <div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box" style="background:#fef3c7;">⚙️ Admin<br><span style="font-size:9px;font-weight:400;">Dashboard</span></div>
+        </div>
+        <div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box" style="background:#fce7f3;">📊 Management<br><span style="font-size:9px;font-weight:400;">Dashboard</span></div>
+        </div>
+        <div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box" style="background:#ede9fe;">📦 Supplier<br><span style="font-size:9px;font-weight:400;">Portal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Driver Flow -->
+  <div class="section-label">🚗 Driver — Screen Flow (Mobile)</div>
+  <div class="flow-container">
+    <div class="flow-box">Login<br><span style="font-size:9px;font-weight:400;">Biometric / PIN</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Dashboard<br><span style="font-size:9px;font-weight:400;">3 Actions</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Delivery Detail<br><span style="font-size:9px;font-weight:400;">Address + Nav</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Status Update<br><span style="font-size:9px;font-weight:400;">Confirm/Issue</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="border-color:var(--wire-green);color:var(--wire-green);">Signature<br><span style="font-size:9px;font-weight:400;">Capture + Photo</span></div>
+  </div>
+
+  <!-- Customer Flow -->
+  <div class="section-label">👤 Customer — Screen Flow (Web)</div>
+  <div class="flow-container">
+    <div class="flow-box">Tracking Input<br><span style="font-size:9px;font-weight:400;">Reference #</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Status Timeline<br><span style="font-size:9px;font-weight:400;">+ Live Map</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Delivery History<br><span style="font-size:9px;font-weight:400;">Past Orders</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Preferences<br><span style="font-size:9px;font-weight:400;">Notifications</span></div>
+  </div>
+
+  <!-- Admin Flow -->
+  <div class="section-label">⚙️ Administrator — Screen Flow (Desktop)</div>
+  <div class="flow-container">
+    <div class="flow-box">Dashboard<br><span style="font-size:9px;font-weight:400;">KPI Overview</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">User Mgmt<br><span style="font-size:9px;font-weight:400;">CRUD + Roles</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Deliveries<br><span style="font-size:9px;font-weight:400;">Assign/Override</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Reports<br><span style="font-size:9px;font-weight:400;">Generate/Export</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Settings<br><span style="font-size:9px;font-weight:400;">System Config</span></div>
+  </div>
+
+  <!-- Management Flow -->
+  <div class="section-label">📊 Management — Screen Flow (Desktop)</div>
+  <div class="flow-container">
+    <div class="flow-box">Exec Dashboard<br><span style="font-size:9px;font-weight:400;">KPIs + Trends</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Analytics<br><span style="font-size:9px;font-weight:400;">Drill-Down</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Financial<br><span style="font-size:9px;font-weight:400;">Revenue/Costs</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Driver Perf.<br><span style="font-size:9px;font-weight:400;">Scorecards</span></div>
+  </div>
+
+  <!-- Supplier Flow -->
+  <div class="section-label">📦 Supplier — Screen Flow (Web)</div>
+  <div class="flow-container">
+    <div class="flow-box">Order Create<br><span style="font-size:9px;font-weight:400;">Multi-Step Form</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Confirmation<br><span style="font-size:9px;font-weight:400;">Tracking Ref</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Order Tracking<br><span style="font-size:9px;font-weight:400;">Status + History</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Account<br><span style="font-size:9px;font-weight:400;">Profile/Billing</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DRIVER MOBILE WIREFRAMES -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">🚗 Driver — Mobile Application Wireframes</div>
+  <div class="page-subtitle">Mobile-first design &bull; Touch targets ≥44px &bull; Hick's Law: max 3 primary actions &bull; Offline-capable</div>
+
+  <div class="screens-row">
+    <!-- Login Screen -->
+    <div class="mobile-frame">
+      <div class="mobile-notch"></div>
+      <div class="mobile-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="mobile-screen" style="padding-top:60px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:8px;">📦</div>
+        <div style="font-size:16px; font-weight:700; margin-bottom:30px; color:var(--wire-accent);">LogiTrack</div>
+        <div style="width:70px;height:70px;border-radius:50%;background:var(--wire-placeholder);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:28px;">👆</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:24px;">Touch to Login with Fingerprint</div>
+        <div class="input-wire" style="text-align:left;">📧 Email address</div>
+        <div class="input-wire" style="text-align:left;">🔒 Password</div>
+        <div class="btn-wire btn-primary" style="width:100%;margin-top:8px;">Sign In</div>
+        <div style="font-size:10px;color:var(--wire-mid);margin-top:12px;">Forgot password?</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div class="mobile-frame">
+      <div class="mobile-notch"></div>
+      <div class="mobile-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="mobile-screen">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div><div style="font-size:14px;font-weight:700;">Hello, James</div><div style="font-size:10px;color:var(--wire-mid);">5 deliveries remaining</div></div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--wire-accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">JD</div>
+        </div>
+        <div style="background:#dcfce7;padding:8px 12px;border-radius:6px;font-size:11px;color:#166534;margin-bottom:14px;">🟢 Online — GPS Active — Last sync: 2 min ago</div>
+
+        <!-- 3 Primary Actions (Hick's Law) -->
+        <div class="delivery-card" style="border-left:3px solid var(--wire-accent);">
+          <div style="font-size:10px;color:var(--wire-accent);font-weight:600;margin-bottom:4px;">CURRENT DELIVERY</div>
+          <div style="font-weight:700;font-size:13px;">DEL-2024-0847</div>
+          <div style="font-size:11px;color:var(--wire-mid);">14 Oak Street, Manchester M1 4BH</div>
+          <div class="btn-wire btn-primary" style="margin-top:8px;font-size:11px;">📍 Navigate</div>
+        </div>
+
+        <div class="delivery-card">
+          <div style="font-size:10px;color:var(--wire-orange);font-weight:600;margin-bottom:4px;">NEXT DELIVERY</div>
+          <div style="font-weight:700;font-size:13px;">DEL-2024-0848</div>
+          <div style="font-size:11px;color:var(--wire-mid);">7 High Street, Salford M5 3AW</div>
+        </div>
+
+        <div class="btn-wire btn-outline" style="width:100%;text-align:center;margin-top:8px;">🗺️ View Full Route (3 remaining)</div>
+      </div>
+      <div class="mobile-nav">
+        <div class="mobile-nav-item active"><span class="nav-icon">🏠</span>Home</div>
+        <div class="mobile-nav-item"><span class="nav-icon">📋</span>Deliveries</div>
+        <div class="mobile-nav-item"><span class="nav-icon">🗺️</span>Route</div>
+        <div class="mobile-nav-item"><span class="nav-icon">⚙️</span>Settings</div>
+      </div>
+    </div>
+
+    <!-- Delivery Detail + Signature -->
+    <div class="mobile-frame">
+      <div class="mobile-notch"></div>
+      <div class="mobile-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <span style="font-size:18px;">←</span>
+          <span style="font-size:14px;font-weight:700;">Delivery Details</span>
+        </div>
+        <div class="delivery-card">
+          <div class="delivery-card-header">
+            <span class="delivery-id">DEL-2024-0847</span>
+            <span class="status-badge status-blue">In Transit</span>
+          </div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:2px;">Mrs. Sarah Johnson</div>
+          <div class="delivery-addr">14 Oak Street, Manchester M1 4BH</div>
+          <div style="font-size:10px;color:var(--wire-mid);margin-top:6px;">📦 1 parcel &bull; 2.3kg &bull; Standard</div>
+          <div style="font-size:10px;color:var(--wire-orange);margin-top:4px;">⚠️ Leave with neighbour if absent</div>
+        </div>
+
+        <div style="font-size:12px;font-weight:600;margin:12px 0 8px;">Update Status</div>
+        <div class="btn-wire btn-success" style="width:100%;text-align:center;margin-bottom:8px;padding:12px;">✅ Delivered — Capture Signature</div>
+        <div class="btn-wire btn-outline" style="width:100%;text-align:center;margin-bottom:8px;">🏠 Left with Neighbour</div>
+        <div class="btn-wire" style="width:100%;text-align:center;background:#fee2e2;color:#991b1b;">❌ Failed Attempt</div>
+
+        <div style="margin-top:14px;border:2px dashed var(--wire-border);border-radius:8px;padding:20px;text-align:center;">
+          <div style="font-size:11px;color:var(--wire-mid);margin-bottom:4px;">✍️ Signature Capture Area</div>
+          <div style="font-size:9px;color:var(--wire-mid);">Draw signature here</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <div class="btn-wire btn-outline" style="flex:1;text-align:center;">📷 Photo</div>
+          <div class="btn-wire btn-outline" style="flex:1;text-align:center;">↩️ Undo</div>
+          <div class="btn-wire btn-primary" style="flex:1;text-align:center;">Confirm ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Design Rationale:</strong> Dashboard limited to 3 primary actions (Hick's Law). All buttons ≥44px height (Fitts's Law). 
+    Network status prominently displayed for offline awareness. High-contrast text for outdoor readability. 
+    Bottom navigation follows standard mobile patterns (Jakob's Law).
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CUSTOMER WEB PORTAL -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">👤 Customer — Web Portal Wireframes</div>
+  <div class="page-subtitle">Z-pattern layout &bull; No app install required &bull; Responsive &bull; Accessible (WCAG 2.1 AA)</div>
+
+  <div class="desktop-frame">
+    <div class="desktop-toolbar">
+      <div class="desktop-dot"></div><div class="desktop-dot"></div><div class="desktop-dot"></div>
+      <div class="desktop-url">🔒 https://track.logitrack.co.uk</div>
+    </div>
+    <div style="padding:20px;">
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--wire-light);margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;color:var(--wire-accent);">📦 LogiTrack</div>
+        <div style="display:flex;gap:20px;font-size:12px;color:var(--wire-mid);">
+          <span>Track</span><span>History</span><span>Preferences</span><span>Help</span><span style="color:var(--wire-accent);">Sign In</span>
+        </div>
+      </div>
+
+      <!-- Z-Pattern: Top line = Search -->
+      <div style="text-align:center;padding:30px 0;">
+        <div style="font-size:22px;font-weight:700;margin-bottom:6px;">Track Your Delivery</div>
+        <div style="font-size:12px;color:var(--wire-mid);margin-bottom:16px;">Enter your tracking reference number</div>
+        <div style="display:flex;max-width:500px;margin:0 auto;gap:8px;">
+          <input class="input-wire" style="flex:1;font-size:14px;padding:12px;" placeholder="e.g. DEL-2024-0847">
+          <div class="btn-wire btn-primary" style="padding:12px 24px;font-size:14px;">🔍 Track</div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div style="display:flex;gap:20px;margin-top:10px;">
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Delivery Status</div>
+          <div class="delivery-card">
+            <div class="delivery-card-header">
+              <span class="delivery-id">DEL-2024-0847</span>
+              <span class="status-badge status-blue">In Transit</span>
+            </div>
+            <div style="font-size:11px;color:var(--wire-mid);margin-bottom:10px;">Estimated arrival: Today, 14:30 – 15:30</div>
+            <div class="timeline">
+              <div class="timeline-item completed"><strong>Order Placed</strong><div class="timeline-time">12 Feb, 09:15</div></div>
+              <div class="timeline-item completed"><strong>Collected from Supplier</strong><div class="timeline-time">12 Feb, 11:30</div></div>
+              <div class="timeline-item completed"><strong>At Local Depot</strong><div class="timeline-time">13 Feb, 06:45</div></div>
+              <div class="timeline-item"><strong>Out for Delivery</strong><div class="timeline-time">13 Feb, 09:00</div></div>
+              <div class="timeline-item"><strong style="color:var(--wire-mid);">Delivered</strong><div class="timeline-time">Pending</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Live Map</div>
+          <div class="placeholder-box" style="min-height:260px;background:linear-gradient(135deg,#dbeafe,#e0f2fe);">
+            🗺️ Interactive Map View<br>
+            <span style="font-size:9px;">Driver location • Route • ETA</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <div class="btn-wire btn-outline" style="flex:1;text-align:center;font-size:11px;">🔔 Notification Preferences</div>
+            <div class="btn-wire btn-outline" style="flex:1;text-align:center;font-size:11px;">📞 Contact Driver</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Design Rationale:</strong> Z-pattern places search input at top-left primary scan point. Timeline provides progressive status disclosure.
+    Map and tracking side-by-side follows Gestalt proximity. No app install — fully responsive web. Minimum 4.5:1 contrast ratio throughout.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ADMINISTRATOR DASHBOARD -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">⚙️ Administrator — Dashboard Wireframes</div>
+  <div class="page-subtitle">F-pattern layout &bull; KPIs top-left &bull; Sidebar navigation &bull; Bulk actions &bull; Keyboard shortcuts</div>
+
+  <div class="desktop-frame">
+    <div class="desktop-toolbar">
+      <div class="desktop-dot"></div><div class="desktop-dot"></div><div class="desktop-dot"></div>
+      <div class="desktop-url">🔒 https://admin.logitrack.co.uk</div>
+    </div>
+    <div class="desktop-content">
+      <div class="sidebar">
+        <div class="sidebar-logo">📦 LogiTrack Admin</div>
+        <div class="sidebar-item active"><span class="icon">📊</span> Dashboard</div>
+        <div class="sidebar-item"><span class="icon">👥</span> Users</div>
+        <div class="sidebar-item"><span class="icon">📋</span> Deliveries</div>
+        <div class="sidebar-item"><span class="icon">🚗</span> Drivers</div>
+        <div class="sidebar-item"><span class="icon">📈</span> Reports</div>
+        <div class="sidebar-item"><span class="icon">⚙️</span> Settings</div>
+        <div class="sidebar-item" style="margin-top:auto;border-top:1px solid #334155;padding-top:14px;"><span class="icon">❓</span> Help</div>
+      </div>
+      <div class="main-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-size:16px;font-weight:700;">Dashboard Overview</div>
+          <div style="display:flex;gap:8px;"><input class="input-wire" style="width:200px;margin:0;" placeholder="🔍 Search..."><div class="btn-wire btn-primary">+ New User</div></div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card"><div class="kpi-value">247</div><div class="kpi-label">Today's Deliveries</div></div>
+          <div class="kpi-card"><div class="kpi-value" style="color:var(--wire-green);">94%</div><div class="kpi-label">On-Time Rate</div></div>
+          <div class="kpi-card"><div class="kpi-value" style="color:var(--wire-orange);">12</div><div class="kpi-label">Active Drivers</div></div>
+          <div class="kpi-card"><div class="kpi-value">3</div><div class="kpi-label">⚠️ Issues</div></div>
+        </div>
+
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Recent Deliveries</div>
+        <table class="table-wire">
+          <tr><th>Ref</th><th>Customer</th><th>Driver</th><th>Status</th><th>ETA</th><th>Actions</th></tr>
+          <tr><td>DEL-0847</td><td>S. Johnson</td><td>J. Driver</td><td><span class="status-badge status-blue">In Transit</span></td><td>14:30</td><td><span style="color:var(--wire-accent);font-size:11px;">View | Edit</span></td></tr>
+          <tr><td>DEL-0846</td><td>M. Williams</td><td>A. Smith</td><td><span class="status-badge status-green">Delivered</span></td><td>—</td><td><span style="color:var(--wire-accent);font-size:11px;">View</span></td></tr>
+          <tr><td>DEL-0845</td><td>R. Brown</td><td>J. Driver</td><td><span class="status-badge status-orange">Delayed</span></td><td>15:45</td><td><span style="color:var(--wire-accent);font-size:11px;">View | Reassign</span></td></tr>
+          <tr><td>DEL-0844</td><td>L. Taylor</td><td>B. Jones</td><td><span class="status-badge status-red">Failed</span></td><td>—</td><td><span style="color:var(--wire-accent);font-size:11px;">View | Rebook</span></td></tr>
+        </table>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--wire-mid);">
+          <span>☑️ Select All | Bulk Assign | Export CSV</span><span>Page 1 of 12 ← →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Design Rationale:</strong> F-pattern places KPI cards top-left for first scan line. Persistent sidebar supports recognition over recall (Nielsen's 6th heuristic).
+    Table with inline actions minimises navigation depth. Bulk actions and keyboard shortcuts (Ctrl+N, Ctrl+S) support power users (Flexibility heuristic).
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MANAGEMENT DASHBOARD -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">📊 Management — Dashboard Wireframes</div>
+  <div class="page-subtitle">Executive KPIs &bull; Drill-down analytics &bull; Financial reports &bull; Configurable layout</div>
+
+  <div class="desktop-frame">
+    <div class="desktop-toolbar">
+      <div class="desktop-dot"></div><div class="desktop-dot"></div><div class="desktop-dot"></div>
+      <div class="desktop-url">🔒 https://manage.logitrack.co.uk</div>
+    </div>
+    <div class="desktop-content">
+      <div class="sidebar">
+        <div class="sidebar-logo">📦 LogiTrack Mgmt</div>
+        <div class="sidebar-item active"><span class="icon">📊</span> Overview</div>
+        <div class="sidebar-item"><span class="icon">📈</span> Analytics</div>
+        <div class="sidebar-item"><span class="icon">💰</span> Financial</div>
+        <div class="sidebar-item"><span class="icon">🚗</span> Driver Perf.</div>
+        <div class="sidebar-item"><span class="icon">📄</span> Reports</div>
+        <div class="sidebar-item"><span class="icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-size:16px;font-weight:700;">Executive Dashboard</div>
+          <div style="display:flex;gap:8px;">
+            <div class="btn-wire btn-outline" style="font-size:10px;">📅 Date Range ▾</div>
+            <div class="btn-wire btn-outline" style="font-size:10px;">📤 Export</div>
+            <div class="btn-wire btn-outline" style="font-size:10px;">⚙️ Customise</div>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card"><div class="kpi-value">1,247</div><div class="kpi-label">Weekly Deliveries ↑12%</div></div>
+          <div class="kpi-card"><div class="kpi-value" style="color:var(--wire-green);">£34.2k</div><div class="kpi-label">Weekly Revenue ↑8%</div></div>
+          <div class="kpi-card"><div class="kpi-value">96.2%</div><div class="kpi-label">On-Time Rate ↑1.3%</div></div>
+          <div class="kpi-card"><div class="kpi-value" style="color:var(--wire-green);">4.6</div><div class="kpi-label">Customer Satisfaction</div></div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Delivery Trends (click to drill down)</div>
+            <div class="placeholder-box" style="min-height:160px;">📈 Line Chart — Daily volumes, on-time rate, revenue<br><span style="font-size:9px;">Clickable data points → detailed view</span></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Driver Performance</div>
+            <div class="placeholder-box" style="min-height:160px;">📊 Bar Chart — Deliveries per driver, rating, efficiency<br><span style="font-size:9px;">Click driver name → individual scorecard</span></div>
+          </div>
+        </div>
+
+        <div style="font-size:13px;font-weight:600;margin:12px 0 8px;">Revenue Breakdown</div>
+        <div class="placeholder-box" style="min-height:80px;">💰 Stacked Area Chart — Revenue by service type, region, customer segment</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Design Rationale:</strong> KPI cards with trend arrows provide immediate executive summary. All charts are clickable for drill-down (Flexibility heuristic).
+    Customise button enables managers to rearrange widgets per their KPI responsibilities. Date range filter applies globally. Export supports PDF and CSV.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUPPLIER PORTAL -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">📦 Supplier — Portal Wireframes</div>
+  <div class="page-subtitle">Multi-step order form &bull; Miller's Law chunking &bull; Bulk upload &bull; Order tracking</div>
+
+  <div class="desktop-frame">
+    <div class="desktop-toolbar">
+      <div class="desktop-dot"></div><div class="desktop-dot"></div><div class="desktop-dot"></div>
+      <div class="desktop-url">🔒 https://supplier.logitrack.co.uk</div>
+    </div>
+    <div class="desktop-content">
+      <div class="sidebar">
+        <div class="sidebar-logo">📦 LogiTrack Supplier</div>
+        <div class="sidebar-item active"><span class="icon">➕</span> New Order</div>
+        <div class="sidebar-item"><span class="icon">📋</span> My Orders</div>
+        <div class="sidebar-item"><span class="icon">📤</span> Bulk Upload</div>
+        <div class="sidebar-item"><span class="icon">👤</span> Account</div>
+        <div class="sidebar-item"><span class="icon">❓</span> Help</div>
+      </div>
+      <div class="main-content">
+        <div style="font-size:16px;font-weight:700;margin-bottom:16px;">Create New Order</div>
+
+        <!-- Progress Steps (Miller's Law - chunked) -->
+        <div style="display:flex;gap:4px;margin-bottom:20px;">
+          <div style="flex:1;text-align:center;">
+            <div style="background:var(--wire-accent);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">1</div>
+            <div style="font-size:10px;color:var(--wire-accent);font-weight:600;margin-top:4px;">Collection</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="background:var(--wire-light);color:var(--wire-mid);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">2</div>
+            <div style="font-size:10px;color:var(--wire-mid);margin-top:4px;">Delivery</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="background:var(--wire-light);color:var(--wire-mid);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">3</div>
+            <div style="font-size:10px;color:var(--wire-mid);margin-top:4px;">Parcel</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="background:var(--wire-light);color:var(--wire-mid);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">4</div>
+            <div style="font-size:10px;color:var(--wire-mid);margin-top:4px;">Confirm</div>
+          </div>
+        </div>
+
+        <!-- Step 1 Form -->
+        <div style="background:#fff;border:1px solid var(--wire-light);border-radius:8px;padding:16px;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Step 1: Collection Details</div>
+          <div class="two-col">
+            <div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Collection Address</div>
+              <div class="input-wire">Start typing address...</div>
+              <div style="font-size:9px;color:var(--wire-accent);margin-top:-4px;margin-bottom:8px;">📍 Use saved address ▾</div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Contact Name</div>
+              <div class="input-wire">Full name</div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Phone</div>
+              <div class="input-wire">+44...</div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Collection Date</div>
+              <div class="input-wire">📅 Select date</div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Time Window</div>
+              <div class="input-wire">09:00 – 17:00 ▾</div>
+              <div style="font-size:11px;font-weight:500;margin-bottom:4px;">Special Instructions</div>
+              <div class="input-wire" style="min-height:60px;">e.g. Ring buzzer, bay 3</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+            <div class="btn-wire btn-outline">Cancel</div>
+            <div class="btn-wire btn-primary">Next: Delivery Details →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Tracking View -->
+  <div style="margin-top:20px;">
+    <div class="section-label">Supplier — Order Tracking Screen</div>
+    <div class="desktop-frame">
+      <div class="desktop-toolbar">
+        <div class="desktop-dot"></div><div class="desktop-dot"></div><div class="desktop-dot"></div>
+        <div class="desktop-url">🔒 https://supplier.logitrack.co.uk/orders</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <div class="tabs">
+          <div class="tab active">All Orders</div>
+          <div class="tab">Pending</div>
+          <div class="tab">In Transit</div>
+          <div class="tab">Delivered</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <input class="input-wire" style="flex:1;margin:0;" placeholder="🔍 Search by reference, address, or customer...">
+          <div class="btn-wire btn-outline">Filter ▾</div>
+          <div class="btn-wire btn-primary">+ New Order</div>
+        </div>
+        <table class="table-wire">
+          <tr><th>Ref</th><th>Delivery To</th><th>Date</th><th>Service</th><th>Status</th><th>Tracking</th></tr>
+          <tr><td>DEL-0847</td><td>14 Oak St, Manchester</td><td>13 Feb</td><td>Standard</td><td><span class="status-badge status-blue">In Transit</span></td><td><span style="color:var(--wire-accent);">Track →</span></td></tr>
+          <tr><td>DEL-0843</td><td>9 Mill Lane, Leeds</td><td>12 Feb</td><td>Express</td><td><span class="status-badge status-green">Delivered</span></td><td><span style="color:var(--wire-accent);">View →</span></td></tr>
+          <tr><td>DEL-0840</td><td>22 Park Rd, Birmingham</td><td>11 Feb</td><td>Standard</td><td><span class="status-badge status-green">Delivered</span></td><td><span style="color:var(--wire-accent);">View →</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Design Rationale:</strong> Multi-step form follows Miller's Law — information chunked into 4 logical sections to prevent cognitive overload.
+    Progress indicator shows current position. Saved address shortcut reduces input (Postel's Law). Tab-based order filtering supports efficient management.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- RESPONSIVE DESIGN -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="page-title">📱 Responsive Design &amp; Accessibility</div>
+  <div class="page-subtitle">Breakpoints: 320px (mobile) • 768px (tablet) • 1024px (laptop) • 1440px (desktop)</div>
+
+  <div class="section-label">Responsive Breakpoint Behaviour</div>
+  <div class="wire-frame">
+    <div class="wire-frame-label">Cross-Platform Consistency</div>
+    <div class="wire-frame-inner">
+      <div style="display:flex;gap:20px;align-items:flex-end;justify-content:center;">
+        <div style="text-align:center;">
+          <div style="width:80px;height:140px;border:2px solid var(--wire-border);border-radius:12px;background:#fff;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--wire-mid);">Single<br>column</div>
+          <div style="font-size:10px;font-weight:600;">320px</div>
+          <div style="font-size:9px;color:var(--wire-mid);">Mobile</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:130px;height:170px;border:2px solid var(--wire-border);border-radius:8px;background:#fff;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--wire-mid);">Sidebar<br>collapses<br>to hamburger</div>
+          <div style="font-size:10px;font-weight:600;">768px</div>
+          <div style="font-size:9px;color:var(--wire-mid);">Tablet</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:200px;height:140px;border:2px solid var(--wire-border);border-radius:6px;background:#fff;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--wire-mid);">Full sidebar<br>+ content area<br>2-column layout</div>
+          <div style="font-size:10px;font-weight:600;">1024px</div>
+          <div style="font-size:9px;color:var(--wire-mid);">Laptop</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:260px;height:150px;border:2px solid var(--wire-border);border-radius:6px;background:#fff;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--wire-mid);">Full layout<br>KPI row + charts<br>side-by-side</div>
+          <div style="font-size:10px;font-weight:600;">1440px</div>
+          <div style="font-size:9px;color:var(--wire-mid);">Desktop</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Accessibility Standards (WCAG 2.1 Level AA)</div>
+  <table class="table-wire">
+    <tr><th>Requirement</th><th>Implementation</th><th>Testing Method</th></tr>
+    <tr><td>Colour Contrast ≥ 4.5:1</td><td>All text meets minimum ratio; icons paired with text labels</td><td>Automated contrast checker</td></tr>
+    <tr><td>Keyboard Navigation</td><td>All interactive elements focusable via Tab; visible focus indicators</td><td>Manual keyboard-only testing</td></tr>
+    <tr><td>Screen Reader Support</td><td>Semantic HTML; ARIA labels; meaningful alt text on all images</td><td>NVDA / VoiceOver testing</td></tr>
+    <tr><td>Touch Targets ≥ 44px</td><td>All buttons and interactive elements meet minimum size</td><td>Element size audit</td></tr>
+    <tr><td>Text Resizing</td><td>Content readable at 200% zoom; no horizontal scrolling</td><td>Browser zoom testing</td></tr>
+    <tr><td>Motion Sensitivity</td><td>Reduced-motion media query; no auto-playing animations</td><td>prefers-reduced-motion check</td></tr>
+  </table>
+
+  <div class="section-label">Icon Library</div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">🏠</div><div style="font-size:9px;color:var(--wire-mid);">Home</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">📋</div><div style="font-size:9px;color:var(--wire-mid);">Deliveries</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">🗺️</div><div style="font-size:9px;color:var(--wire-mid);">Route</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">📊</div><div style="font-size:9px;color:var(--wire-mid);">Analytics</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">👥</div><div style="font-size:9px;color:var(--wire-mid);">Users</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">⚙️</div><div style="font-size:9px;color:var(--wire-mid);">Settings</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">🔍</div><div style="font-size:9px;color:var(--wire-mid);">Search</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">🔔</div><div style="font-size:9px;color:var(--wire-mid);">Alerts</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">📤</div><div style="font-size:9px;color:var(--wire-mid);">Export</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">➕</div><div style="font-size:9px;color:var(--wire-mid);">Add New</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">✅</div><div style="font-size:9px;color:var(--wire-mid);">Confirm</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">❌</div><div style="font-size:9px;color:var(--wire-mid);">Cancel</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">📷</div><div style="font-size:9px;color:var(--wire-mid);">Camera</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">✍️</div><div style="font-size:9px;color:var(--wire-mid);">Signature</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">💰</div><div style="font-size:9px;color:var(--wire-mid);">Financial</div></div>
+    <div style="text-align:center;width:70px;"><div style="font-size:24px;">❓</div><div style="font-size:9px;color:var(--wire-mid);">Help</div></div>
+  </div>
+
+  <div class="annotation">
+    <strong>Summary:</strong> All wireframes demonstrate the four required elements — <strong>Icons</strong> (consistent icon library with text labels), 
+    <strong>Navigation</strong> (sidebar for desktop, bottom nav for mobile, breadcrumbs), 
+    <strong>Systems Layout</strong> (role-specific screen structures with F/Z-pattern alignment), and 
+    <strong>Flow Between Screens</strong> (documented user journeys per role with logical transitions).
+  </div>
+</div>
+
+</body>
+</html>
